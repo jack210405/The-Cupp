@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,5 +23,9 @@ public class ui : MonoBehaviour
     }
     public void segreto(){
         SceneManager.LoadScene("Segreto");
+    }
+
+    public void tornamenu(){
+        SceneManager.LoadScene("Menu_Iniziale");
     }
 }
