@@ -1,61 +1,39 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
+using System.Collections;
+using System.Collections.Generic;
 
 public class NemicoController : MonoBehaviour
 {
-    public GameObject proiettilePrefab;
-    public Transform puntoDiSparo;
-    public float forzaSparo = 20f;
-    public float frequenzaDiSparo = 1f;
-    public Transform giocatore;
+    public GameObject enemy;
+    public GameObject target;
 
-    private float timer = 0f;
+    [SerializeField] private float timer = 5;
+    private float bulletTime;
 
+    public GameObject[] enemyBullets = new GameObject[5];
+    public Transform spawnPoint;
+    public float enemySpeed;
+    Vector3 directionToTarget;
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (timer >= frequenzaDiSparo)
-        {
-            timer = 0f;
-            Spara();
-        }
-        //giocatore = GameObject.Find("Player").transform;
+        
+        Spara();
     }
 
     void Spara()
     {
-        GameObject proiettile = Instantiate(proiettilePrefab, puntoDiSparo.position, puntoDiSparo.rotation);
-        Rigidbody rb = proiettile.GetComponent<Rigidbody>();
+        bulletTime -= Time.deltaTime;
 
-        Vector3 direzione = (giocatore.position - transform.position).normalized;
-        rb.velocity = direzione * forzaSparo;
+        if (bulletTime > 0) return;
 
-    }
-}/*using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.InputSystem;
+        bulletTime = timer;
+        int i = Random.Range(0,7+1);
+        GameObject bulletobj = Instantiate(enemyBullets[i], spawnPoint.transform.position, spawnPoint.transform.rotation) as GameObject;
+        Rigidbody bulletRig = bulletobj.GetComponent<Rigidbody>();
+        bulletRig.AddForce(bulletRig.transform.forward * enemySpeed);
 
-public class Spawni : MonoBehaviour
-{
 
-    [SerializeField]
-    public GameObject proiettilePrefab;
-    [SerializeField]
-    public Transform firePoint;
-    
-    private InputActionReference shootAction;
-
-    // Update is called once per frame
-    void Update()
-    {
-        if(shootAction.action.WasPressedThisFrame()){
-            FireProiettile();
-        }
-    }
-
-    void FireProiettile(){
-        GameObject newProiettile = Instantiate(proiettilePrefab, firePoint.position, firePoint.rotation);
     }
 }
-*/
